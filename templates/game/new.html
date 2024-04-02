@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}New game{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Nouvelle partie</h1>
+
+    <form action="{{ url_for('new_game') }}" method="post">
+        
+        <input type="checkbox" name="auto-choice" id="choice" value="true" checked>
+        <label for="choice">Choix automatique des équipes</label>
+        <br><br>
+
+        {% for user in users %}
+            <div>
+                <input type="checkbox" value="{{ user.id }}" id="player{{ user.id }}" name="selected_players">
+                <label for="player{{ user.id }}">{{ user.username }}</label>
+            </div>
+        {% endfor %}
+
+
+        <button type="submit">Créer</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}New user{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Nouveau joueur</h1>
+
+    <form action="{{ url_for('add_user') }}" method="post">
+        <label for="username">Username :</label>
+        <input type="text" name="username" required>
+        <br>
+        <button type="submit">Créer</button>
+    </form>
+
+    <p><a href="{{ url_for('get_all_users')}}">Liste des joueurs</a></p>
+{% endblock %}

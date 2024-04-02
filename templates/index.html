@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Bf_web{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h1 class="mainTitle">Bf_web</h1>
+<div class="btnContainer">
+    <a class="actionBtn" href="{{ url_for('new_game')}}">Nouvelle partie</a>
+    <a class="actionBtn" href="{{ url_for('get_all_games')}}">Historique des parties</a>
+    <a class="actionBtn" href="{{ url_for('add_user')}}">Nouveau joueur</a>
+    <a class="actionBtn" href="{{ url_for('get_all_users')}}">Liste des joueurs</a>
+</div>
+<footer>
+    &copy Ulysse GUILLOT, 2024
+</footer>
+
+{# TODO : Three.js boucing babyfoot ball against the walls #}
+
+<style>
+    .mainTitle {
+        color: #ffffff;
+        padding-top: 10vh;
+        font-size: 9vw;
+        text-align: center;
+    }
+
+    .btnContainer {
+        margin-top: 20vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .actionBtn {
+        width: 80vw;
+        color: #ffffff;
+        font-weight: bolder;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 10px;
+        background: rgb(20, 0, 93);
+        background: linear-gradient(326deg, rgba(20, 0, 93, 1) 0%, rgba(80, 9, 121, 1) 72%);
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    footer {
+        color: #616161;
+        position: absolute;
+        bottom: 15px;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        width: fit-content;
+    }
+</style>
+
+{% endblock %}
