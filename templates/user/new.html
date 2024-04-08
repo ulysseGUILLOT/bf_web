@@ -5,14 +5,60 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Nouveau joueur</h1>
+    <h1 class="mainTitle">Nouveau joueur</h1>
 
-    <form action="{{ url_for('add_user') }}" method="post">
-        <label for="username">Username :</label>
-        <input type="text" name="username" required>
-        <br>
-        <button type="submit">Créer</button>
+    <form class="newUserForm" action="{{ url_for('add_user') }}" method="post">
+        <label class="usernameLabel" for="username">Nom du joueur :</label>
+        <input class="usernameInput" type="text" name="username" required>
+        <button class="formBtn" type="submit">Créer</button>
     </form>
 
-    <p><a href="{{ url_for('get_all_users')}}">Liste des joueurs</a></p>
+    <style>
+        .mainTitle {
+            color: #ffffff;
+            padding-top: 4vh;
+            font-size: 8vw;
+            text-align: center;
+        }
+
+        .newUserForm {
+            position: absolute;
+            top: 30vh;
+            left: 0;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .usernameLabel {
+            color: #ffffff;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .usernameInput {
+            color: #000000;
+            background-color: rgb(214, 214, 214);
+            width: 60vw;
+            height: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 80px;
+            border: none;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .formBtn {
+            background: linear-gradient(326deg, rgba(20, 0, 93, 1) 0%, rgba(80, 9, 121, 1) 72%);
+            font-size: 18px;
+            color: #ffffff;
+            padding: 10px 30px 10px 30px;
+            border: none;
+            border-radius: 8px;
+        }
+
+    </style>
+
 {% endblock %}
