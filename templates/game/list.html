@@ -15,10 +15,14 @@
 
     <ul class="gameCarousel">
         {% for game in games %}
+        {% if game.finished == False %}
         <li class="gameCard">
-            {% if game.finished == False %}
             <a class="cardBtn" href="{{ url_for('play_game', game_id=game.id) }}">
-                <h3>{{ game.white_score }} - {{ game.black_score }}</h3>
+                <div class="score">
+                    <div class="scoreNumber">{{ game.white_score }}</div>
+                    <div class="scoreSeparator">-</div>
+                    <div class="scoreNumber">{{ game.black_score }}</div>
+                </div>
                 <p>Début : {{ game.created_at.strftime('%Hh%M , %d-%m-%Y') }}</p>
                 <p>Durée : {{ game.duration }}</p>
                 <p>
@@ -28,8 +32,14 @@
                     {% endfor %}
                 </p>
             </a>
-            {% else %}
-            <h3>{{ game.white_score }} - {{ game.black_score }}</h3>
+        </li>
+        {% else %}
+        <li class="gameCard" style="background: linear-gradient(326deg, rgb(20, 20, 20) 0%, rgb(65, 65, 65) 72%);">
+            <div class="score">
+                <div class="scoreNumber">{{ game.white_score }}</div>
+                <div class="scoreSeparator">-</div>
+                <div class="scoreNumber">{{ game.black_score }}</div>
+            </div>
             <p>Début : {{ game.created_at.strftime('%Hh%M , %d-%m-%Y') }}</p>
             <p>Durée : {{ game.duration }}</p>
             <p>
@@ -38,7 +48,8 @@
                 {{ assoc.user.username }},
                 {% endfor %}
             </p>
-            {% endif %}
+        </li>
+        {% endif %}
         </li>
         {% endfor %}
     </ul>
@@ -96,12 +107,29 @@
     .gameCard {
         margin: 20px;
         border-radius: 20px;
-        background: rgb(20, 0, 93);
         background: linear-gradient(326deg, rgba(20, 0, 93, 1) 0%, rgba(80, 9, 121, 1) 72%);
         padding: 15px;
         color: #ffffff;
         list-style: none;
     }
+
+    .score {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .scoreNumber {
+        font-size: 24px;
+        padding-inline: 10px;
+        padding-top: 2px;
+        margin-inline: 6px;
+        background: radial-gradient(circle, rgb(59, 59, 59) 0%, rgb(27, 27, 27) 100%);
+        border-radius: 6px;
+    }
+
 </style>
 
 {% endblock %}

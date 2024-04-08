@@ -39,7 +39,7 @@ def delete_user():
 @app.route("/games", methods=["GET"])
 def get_all_games():
     games = Game.query.all()
-    return render_template("game/list.html", games=games)
+    return render_template("game/list.html", games=reversed(games))
 
 @app.route("/games/new", methods=["GET", "POST"])
 def new_game():
