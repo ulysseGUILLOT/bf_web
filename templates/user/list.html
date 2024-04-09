@@ -1,44 +1,123 @@
 {% extends "base.html" %}
 {% block title %}Users{% endblock %}
 {% block head %}
-    {{ super() }}
-    <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
+{{ super() }}
+<script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
 {% endblock %}
 
 
 {% block content %}
-    <h1>Liste des joueurs</h1>
+<h1 class="mainTitle">Liste des joueurs</h1>
 
-    <ul>
+<div class="mainContainer">
+    <div class="actionMenu">
+        <a class="menuBtn" href="{{ url_for('index')}}">Accueil</a>
+        <a class="menuBtn" href="{{ url_for('add_user')}}">Nouveau joueur</a>
+    </div>
+
+    <ul class="userCarousel">
         {% for user in users %}
-        <li>
-            <p>{{ user.username }} - matches : {{ user.matches }} - goals : {{ user.goals_total }} - gamelles : {{ user.bounce_out_total }}</p>
+        <li class="userCard">
+            <div class="cardTopRow">
+                <h3 class="username">{{ user.username }}</h3>
+                <button class="deleteBtn" data-user_id="{{ user.id }}">✖</button>
+            </div>
+            <p>Matches : {{ user.matches }} - goals : {{ user.goals_total }} - gamelles : {{
+                user.bounce_out_total }}</p>
             {% if user.matches != 0 %}
-            <p>moyenne goals par match : {{ user.goals_total / user.matches }} - gamelles par match {{ user.bounce_out_total / user.matches }}</p>
+            <p>moyenne goals par match : {{ '%.1f' | format(user.goals_total / user.matches) }} - gamelles par match {{
+                '%.1f' | format(user.bounce_out_total / user.matches) }}</p>
             {% endif %}
-            <button class="deleteBtn" data-user_id="{{ user.id }}">Supprimer</button>
+
         </li>
         {% endfor %}
     </ul>
+</div>
 
-    <p><a href="{{ url_for('add_user')}}">Nouveau joueur</a></p>
-    <p><a href="{{ url_for('index')}}">Accueil</a></p>
 
-    <script>
-        $('button.deleteBtn').on('click', function() {
-            $.ajax({
-                type: "DELETE",
-                url: "{{ url_for('delete_user') }}",
-                data: {
-                    user_id: $(this).data('user_id'),
-                },
-                success: function(response) {
-                    location.reload()
-                },
-                error: function(xhr, status, error) {
-                    console.error(error)
-                }
-            })
+<script>
+    $('button.deleteBtn').on('click', function () {
+        $.ajax({
+            type: "DELETE",
+            url: "{{ url_for('delete_user') }}",
+            data: {
+                user_id: $(this).data('user_id'),
+            },
+            success: function (response) {
+                location.reload()
+            },
+            error: function (xhr, status, error) {
+                console.error(error)
+            }
         })
-    </script>
+    })
+</script>
+
+<style>
+    .mainContainer {
+        position: absolute;
+        top: 25vmin;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+    }
+
+    .actionMenu {
+        height: 40px;
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+    }
+
+    .menuBtn {
+        background-color: #333333;
+        border-radius: 10px;
+        color: #ffffff;
+        text-decoration: none;
+        padding: 10px;
+        width: 35vw;
+    }
+
+    .mainTitle {
+        color: #ffffff;
+        padding-top: 4vh;
+        font-size: 8vw;
+        text-align: center;
+    }
+
+    .userCarousel {
+        position: absolute;
+        top: 50px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow-y: auto;
+    }
+
+    .userCard {
+        margin: 20px;
+        border-radius: 20px;
+        background: linear-gradient(326deg, rgba(20, 0, 93, 1) 0%, rgba(80, 9, 121, 1) 72%);
+        padding: 15px;
+        color: #ffffff;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cardTopRow {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .deleteBtn {
+        border: none;
+        background-color: #181818;
+        color: #ffffff;
+        border-radius: 6px;
+        padding-inline: 6px;
+    }
+</style>
 {% endblock %}
