@@ -23,33 +23,40 @@
 </div>
 
 <div class="playersContainer">
-    <h2>Joueurs blancs</h2>
-    {% for assoc in game.users %}
-    {% if assoc.team == 0 %}
-    <p>{{ assoc.user.username }}</p>
-    {% if game.finished == True %}
-    <button class="score" disabled>But</button>
-    <button class="score" disabled>Gamelle</button>
-    {% else %}
-    <button class="score" data-score="goal" data-user_id="{{ assoc.user.id }}">But</button>
-    <button class="score" data-score="bounce_out" data-user_id="{{ assoc.user.id }}">Gamelle</button>
-    {% endif %}
-    {% endif %}
-    {% endfor %}
+    <div class="whiteTeam">
+        {% for assoc in game.users %}
+        {% if assoc.team == 0 %}
+        <button onclick="openModal('modal{{ assoc.user.id }}')" class="userBtn">{{ assoc.user.username }}</button>
 
-    <h2>Joueurs noirs</h2>
-    {% for assoc in game.users %}
-    {% if assoc.team == 1 %}
-    <p>{{ assoc.user.username }}</p>
-    {% if game.finished == True %}
-    <button class="score" disabled>But</button>
-    <button class="score" disabled>Gamelle</button>
-    {% else %}
-    <button class="score" data-score="goal" data-user_id="{{ assoc.user.id }}">But</button>
-    <button class="score" data-score="bounce_out" data-user_id="{{ assoc.user.id }}">Gamelle</button>
-    {% endif %}
-    {% endif %}
-    {% endfor %}
+        <div id="modal{{ assoc.user.id }}" class="modalBackground">
+            <div class="modalContainer">
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn" data-score="goal"
+                    data-user_id="{{ assoc.user.id }}">But</button>
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn" data-score="bounce_out"
+                    data-user_id="{{ assoc.user.id }}">Gamelle</button>
+            </div>
+        </div>
+
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="blackTeam">
+        {% for assoc in game.users %}
+        {% if assoc.team == 1 %}
+        <button onclick="openModal('modal{{ assoc.user.id }}')" class="userBtn">{{ assoc.user.username }}</button>
+
+        <div id="modal{{ assoc.user.id }}" class="modalBackground">
+            <div class="modalContainer">
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn" data-score="goal"
+                    data-user_id="{{ assoc.user.id }}">But</button>
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn" data-score="bounce_out"
+                    data-user_id="{{ assoc.user.id }}">Gamelle</button>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
 </div>
 
 <div class="commandPanel">
@@ -63,7 +70,7 @@
 </div>
 
 <script>
-    $('button.score').on("click", function () {
+    $('button.scoreBtn').on("click", function () {
         $.ajax({
             type: "POST",
             url: "{{ url_for('goal', game_id=game.id) }}",
@@ -83,6 +90,23 @@
             }
         })
     })
+</script>
+<script>
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId)
+        modal.style.display = 'block'
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = 'none'
+            }
+        }
+    }
+
+    function closeModal(modalID) {
+        const modal = document.getElementById(modalID)
+        modal.style.display = 'none'
+    }
 </script>
 <script src="{{ url_for('static', filename='clock.js') }}"></script>
 
@@ -117,6 +141,74 @@
     .scoreSeparator {
         color: #ffffff;
         font-weight: bold;
+    }
+
+    .playersContainer {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .whiteTeam, .blackTeam {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        align-items: center;
+    }
+
+    .userBtn {
+        border: none;
+        width: 40vw;
+        height: 40px;
+        border-radius: 20px;
+        margin-top: 20px;
+        font-size: 18px;
+    }
+
+    .whiteTeam .userBtn {
+        background: linear-gradient(326deg, rgb(238, 238, 238) 0%, rgb(145, 145, 145) 100%);
+        color: #000000;
+    }
+
+    .blackTeam .userBtn {
+        background: linear-gradient(326deg, rgb(59, 59, 59) 0%, rgb(27, 27, 27) 100%);
+        color: #ffffff;
+    }
+
+    .modalBackground {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 100vw;
+        z-index: 1;
+        backdrop-filter: blur(5px);
+    }
+
+    .modalContainer {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        background-color: #222222;
+        padding: 40px;
+        border-radius: 15px;
+        color: #ffffff;
+    }
+
+    .scoreBtn {
+        height: 50px;
+        width: 160px;
+        margin: 8px 0 8px 0;
+        border: none;
+        border-radius: 25px;
+        font-weight: bold;
+        font-size: 20px;
+        background-color: #111111;
+        color: #ffffff;
     }
 
     .commandPanel {
