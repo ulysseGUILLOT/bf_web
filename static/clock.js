@@ -5,7 +5,7 @@ function toggleTimer() {
     if (isPlaying) {
         clearInterval(timer);
         isPlaying = false;
-        $('#playPauseBtn').text('▶');
+        $('#playPauseBtn').html('<i class="bi bi-play-fill">');
     } else {
         timer = setInterval(function () {
             var timeLeft = parseInt($('#timer').text());
@@ -16,7 +16,7 @@ function toggleTimer() {
             }
         }, 1000);
         isPlaying = true;
-        $('#playPauseBtn').text('❚❚');
+        $('#playPauseBtn').html('<i class="bi bi-pause-fill">');
     }
 }
 

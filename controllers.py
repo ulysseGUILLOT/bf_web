@@ -113,6 +113,15 @@ def goal(game_id):
                         game.black_score = game.black_score - 1
                     elif team == 1 and score_type == 'bounce_out' :
                         game.white_score = game.white_score -1
+                    elif team == 0 and score_type == 'own_goal' :
+                        game.black_score = game.black_score + 1
+                    elif team == 1 and score_type == 'own_goal' :
+                        game.white_score = game.white_score + 1
+                    elif team == 0 and score_type == 'own_bounce_out' :
+                        game.white_score = game.white_score -1
+                    elif team == 1 and score_type == 'own_bounce_out' :
+                        game.black_score = game.black_score - 1
+
 
                     if score_type == 'goal' :
                         user.goals_total = user.goals_total + 1

@@ -6,6 +6,7 @@
 {% block head %}
 {{ super() }}
 <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='node_modules/bootstrap-icons/font/bootstrap-icons.min.css') }}">
 {% endblock %}
 
 
@@ -34,6 +35,10 @@
                     data-user_id="{{ assoc.user.id }}">But</button>
                 <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn" data-score="bounce_out"
                     data-user_id="{{ assoc.user.id }}">Gamelle</button>
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn csc" data-score="own_goal"
+                    data-user_id="{{ assoc.user.id }}">But CSC</button>
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn csc" data-score="own_bounce_out"
+                    data-user_id="{{ assoc.user.id }}">Gamelle CSC</button>
             </div>
         </div>
 
@@ -52,6 +57,10 @@
                     data-user_id="{{ assoc.user.id }}">But</button>
                 <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn" data-score="bounce_out"
                     data-user_id="{{ assoc.user.id }}">Gamelle</button>
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn csc" data-score="own_goal"
+                    data-user_id="{{ assoc.user.id }}">But CSC</button>
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn csc" data-score="own_bounce_out"
+                    data-user_id="{{ assoc.user.id }}">Gamelle CSC</button>
             </div>
         </div>
         {% endif %}
@@ -66,7 +75,7 @@
     <div class="col">
         <div id="timer">60</div>
     </div>
-    <button id="playPauseBtn">▶</button>
+    <button id="playPauseBtn"><i class="bi bi-play-fill"></i></button>
 </div>
 
 <script>
@@ -149,7 +158,8 @@
         width: 100%;
     }
 
-    .whiteTeam, .blackTeam {
+    .whiteTeam,
+    .blackTeam {
         display: flex;
         flex-direction: column;
         width: 50%;
@@ -211,6 +221,10 @@
         color: #ffffff;
     }
 
+    .csc {
+        background-color: #444444;
+    }
+
     .commandPanel {
         display: flex;
         flex-direction: row;
@@ -255,7 +269,7 @@
         height: 100px;
         border-radius: 50%;
         justify-content: center;
-        font-size: large;
+        font-size: 30px;
         border: none;
         background: radial-gradient(circle, rgb(59, 59, 59) 0%, rgb(27, 27, 27) 100%);
         color: #ffffff;
