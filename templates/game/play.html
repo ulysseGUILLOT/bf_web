@@ -6,7 +6,8 @@
 {% block head %}
 {{ super() }}
 <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
-<link rel="stylesheet" href="{{ url_for('static', filename='node_modules/bootstrap-icons/font/bootstrap-icons.min.css') }}">
+<link rel="stylesheet"
+    href="{{ url_for('static', filename='node_modules/bootstrap-icons/font/bootstrap-icons.min.css') }}">
 {% endblock %}
 
 
@@ -31,14 +32,14 @@
 
         <div id="modal{{ assoc.user.id }}" class="modalBackground">
             <div class="modalContainer">
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn" data-score="goal"
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn" data-score="goal"
                     data-user_id="{{ assoc.user.id }}">But</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn" data-score="bounce_out"
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn" data-score="bounce_out"
                     data-user_id="{{ assoc.user.id }}">Gamelle</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn csc" data-score="own_goal"
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light" data-score="own_goal"
                     data-user_id="{{ assoc.user.id }}">But CSC</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn csc" data-score="own_bounce_out"
-                    data-user_id="{{ assoc.user.id }}">Gamelle CSC</button>
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light"
+                    data-score="own_bounce_out" data-user_id="{{ assoc.user.id }}">Gamelle CSC</button>
             </div>
         </div>
 
@@ -53,14 +54,14 @@
 
         <div id="modal{{ assoc.user.id }}" class="modalBackground">
             <div class="modalContainer">
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn" data-score="goal"
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn" data-score="goal"
                     data-user_id="{{ assoc.user.id }}">But</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn" data-score="bounce_out"
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn" data-score="bounce_out"
                     data-user_id="{{ assoc.user.id }}">Gamelle</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn csc" data-score="own_goal"
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light" data-score="own_goal"
                     data-user_id="{{ assoc.user.id }}">But CSC</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn csc" data-score="own_bounce_out"
-                    data-user_id="{{ assoc.user.id }}">Gamelle CSC</button>
+                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light"
+                    data-score="own_bounce_out" data-user_id="{{ assoc.user.id }}">Gamelle CSC</button>
             </div>
         </div>
         {% endif %}
@@ -70,7 +71,14 @@
 
 <div class="commandPanel">
     <div class="col">
-        <a class="exitBtn" href="{{ url_for('index') }}">Quitter</a>
+        <button class="menuBtn" onclick="openModal('modalMenu')"><i class="bi bi-list"></i></button>
+    </div>
+    <div id="modalMenu" class="modalBackground">
+        <div class="modalContainer">
+            <!-- todo: code ajout joueur + AJAX -->
+            <button class="modalBtn">Ajouter joueur</button>
+            <a class="modalBtn light" href="{{ url_for('index') }}">Quitter</a>
+        </div>
     </div>
     <div class="col">
         <div id="timer">60</div>
@@ -209,7 +217,8 @@
         color: #ffffff;
     }
 
-    .scoreBtn {
+    .modalBtn {
+        display: flex;
         height: 50px;
         width: 160px;
         margin: 8px 0 8px 0;
@@ -219,9 +228,12 @@
         font-size: 20px;
         background-color: #111111;
         color: #ffffff;
+        text-decoration: none;
+        justify-content: center;
+        align-items: center;
     }
 
-    .csc {
+    .light {
         background-color: #444444;
     }
 
@@ -243,8 +255,10 @@
         justify-content: center;
     }
 
-    .exitBtn {
+    .menuBtn {
         text-decoration: none;
+        border: none;
+        font-size: 25px;
         color: #ffffff;
         padding: 4px 10px 4px 10px;
         border-radius: 6px;
