@@ -35,19 +35,21 @@
         </li>
         {% else %}
         <li class="gameCard" style="background: linear-gradient(326deg, rgb(20, 20, 20) 0%, rgb(65, 65, 65) 72%);">
-            <div class="score">
-                <div class="scoreNumber">{{ game.white_score }}</div>
-                <div class="scoreSeparator">-</div>
-                <div class="scoreNumber">{{ game.black_score }}</div>
-            </div>
-            <p>Début : {{ game.created_at.strftime('%Hh%M , %d-%m-%Y') }}</p>
-            <p>Durée : {{ game.duration }}</p>
-            <p>
-                Joueurs :
-                {% for assoc in game.users %}
-                {{ assoc.user.username }},
-                {% endfor %}
-            </p>
+            <a class="cardBtn" href="{{ url_for('end_game', game_id=game.id) }}">
+                <div class="score">
+                    <div class="scoreNumber">{{ game.white_score }}</div>
+                    <div class="scoreSeparator">-</div>
+                    <div class="scoreNumber">{{ game.black_score }}</div>
+                </div>
+                <p>Début : {{ game.created_at.strftime('%Hh%M , %d-%m-%Y') }}</p>
+                <p>Durée : {{ game.duration }}</p>
+                <p>
+                    Joueurs :
+                    {% for assoc in game.users %}
+                    {{ assoc.user.username }},
+                    {% endfor %}
+                </p>
+            </a>
         </li>
         {% endif %}
         </li>
@@ -129,7 +131,6 @@
         background: radial-gradient(circle, rgb(59, 59, 59) 0%, rgb(27, 27, 27) 100%);
         border-radius: 6px;
     }
-
 </style>
 
 {% endblock %}
