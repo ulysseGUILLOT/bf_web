@@ -1,0 +1,16 @@
+{% set usersInGame = [] %}
+{% for assoc in game.users %}
+{% set _ = usersInGame.append(assoc.user) %}
+{% endfor %}
+
+{% set user_counter = 0 %}
+{% for user in users %}
+{% if user not in usersInGame %}
+{% set user_counter = user_counter + 1 %}
+<button class="modalBtn freePlayerBtn" data-user_id="{{ user.id }}">{{ user.username }}</button>
+{% endif %}
+{% endfor %}
+
+{% if user_counter == 0 %}
+<p class="modalMessage">Aucun joueur disponible</p>
+{% endif %}

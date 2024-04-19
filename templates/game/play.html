@@ -25,65 +25,29 @@
 </div>
 
 <div class="playersContainer">
-    <div class="whiteTeam">
-        {% for assoc in game.users %}
-        {% if assoc.team == 0 %}
-        <button onclick="openModal('modal{{ assoc.user.id }}')" class="userBtn">{{ assoc.user.username }}</button>
-
-        <div id="modal{{ assoc.user.id }}" class="modalBackground">
-            <div class="modalContainer">
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn" data-score="goal"
-                    data-user_id="{{ assoc.user.id }}">But</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn" data-score="bounce_out"
-                    data-user_id="{{ assoc.user.id }}">Gamelle</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light" data-score="own_goal"
-                    data-user_id="{{ assoc.user.id }}">But CSC</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light"
-                    data-score="own_bounce_out" data-user_id="{{ assoc.user.id }}">Gamelle CSC</button>
-            </div>
-        </div>
-
-        {% endif %}
-        {% endfor %}
-    </div>
-
-    <div class="blackTeam">
-        {% for assoc in game.users %}
-        {% if assoc.team == 1 %}
-        <button onclick="openModal('modal{{ assoc.user.id }}')" class="userBtn">{{ assoc.user.username }}</button>
-
-        <div id="modal{{ assoc.user.id }}" class="modalBackground">
-            <div class="modalContainer">
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn" data-score="goal"
-                    data-user_id="{{ assoc.user.id }}">But</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn" data-score="bounce_out"
-                    data-user_id="{{ assoc.user.id }}">Gamelle</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light" data-score="own_goal"
-                    data-user_id="{{ assoc.user.id }}">But CSC</button>
-                <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light"
-                    data-score="own_bounce_out" data-user_id="{{ assoc.user.id }}">Gamelle CSC</button>
-            </div>
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
+    {% include "game/_playerPanel.html" %}
 </div>
 
 <div class="commandPanel">
     <div class="col">
         <button class="menuBtn" onclick="openModal('modalMenu')"><i class="bi bi-list"></i></button>
     </div>
-    <div id="modalMenu" class="modalBackground">
-        <div class="modalContainer">
-            <!-- todo: code ajout joueur + AJAX -->
-            <button class="modalBtn">Ajouter joueur</button>
-            <a class="modalBtn light" href="{{ url_for('index') }}">Quitter</a>
-        </div>
-    </div>
     <div class="col">
         <div id="timer">60</div>
     </div>
     <button id="playPauseBtn"><i class="bi bi-play-fill"></i></button>
+</div>
+
+<div id="modalMenu" class="modalBackground">
+    <div class="modalContainer">
+        <button onclick="closeModal('modalMenu'); openModal('modalNewPlayer')" class="modalBtn addPlayerBtn">Ajouter joueur</button>
+        <a class="modalBtn light" href="{{ url_for('index') }}">Quitter</a>
+    </div>
+</div>
+
+<div id="modalNewPlayer" class="modalBackground">
+    <div class="modalContainer freePlayersList">
+    </div>
 </div>
 
 <script>
@@ -101,6 +65,37 @@
                 }
                 $('#whiteScore').text(response.white_score)
                 $('#blackScore').text(response.black_score)
+            },
+            error: function (xhr, status, error) {
+                console.error(error)
+            }
+        })
+    })
+
+    
+
+    $('button.addPlayerBtn').on("click", function () {
+        $.ajax({
+            url: "{{ url_for('get_free_player_list', game_id=game.id) }}",
+            success: function (response) {
+                $(".freePlayersList").html(response)
+                $('button.freePlayerBtn').on("click", function () {
+                    const modal = document.getElementById('modalNewPlayer')
+                    modal.style.display = 'none'
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url_for('add_player_in_game', game_id=game.id) }}",
+                        data: {
+                            selected_player_id: $(this).data('user_id'),
+                        },
+                        success: function (response) {
+                            $(".playersContainer").html(response)
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error)
+                        }
+                    })
+                })
             },
             error: function (xhr, status, error) {
                 console.error(error)
@@ -220,7 +215,7 @@
     .modalBtn {
         display: flex;
         height: 50px;
-        width: 160px;
+        width: 180px;
         margin: 8px 0 8px 0;
         border: none;
         border-radius: 25px;
@@ -235,6 +230,13 @@
 
     .light {
         background-color: #444444;
+    }
+
+    .modalMessage {
+        width: 180px;
+        font-size: large;
+        font-weight: bold;
+        text-align: center;
     }
 
     .commandPanel {

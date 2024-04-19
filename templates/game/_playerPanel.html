@@ -1,0 +1,42 @@
+<div class="whiteTeam">
+    {% for assoc in game.users %}
+    {% if assoc.team == 0 %}
+    <button onclick="openModal('modal{{ assoc.user.id }}')" class="userBtn">{{ assoc.user.username }}</button>
+
+    <div id="modal{{ assoc.user.id }}" class="modalBackground">
+        <div class="modalContainer">
+            <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn" data-score="goal"
+                data-user_id="{{ assoc.user.id }}">But</button>
+            <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn"
+                data-score="bounce_out" data-user_id="{{ assoc.user.id }}">Gamelle</button>
+            <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light"
+                data-score="own_goal" data-user_id="{{ assoc.user.id }}">But CSC</button>
+            <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light"
+                data-score="own_bounce_out" data-user_id="{{ assoc.user.id }}">Gamelle CSC</button>
+        </div>
+    </div>
+
+    {% endif %}
+    {% endfor %}
+</div>
+
+<div class="blackTeam">
+    {% for assoc in game.users %}
+    {% if assoc.team == 1 %}
+    <button onclick="openModal('modal{{ assoc.user.id }}')" class="userBtn">{{ assoc.user.username }}</button>
+
+    <div id="modal{{ assoc.user.id }}" class="modalBackground">
+        <div class="modalContainer">
+            <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn" data-score="goal"
+                data-user_id="{{ assoc.user.id }}">But</button>
+            <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn"
+                data-score="bounce_out" data-user_id="{{ assoc.user.id }}">Gamelle</button>
+            <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light"
+                data-score="own_goal" data-user_id="{{ assoc.user.id }}">But CSC</button>
+            <button onclick="closeModal('modal{{ assoc.user.id }}')" class="scoreBtn modalBtn light"
+                data-score="own_bounce_out" data-user_id="{{ assoc.user.id }}">Gamelle CSC</button>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>

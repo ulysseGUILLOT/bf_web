@@ -82,15 +82,62 @@ def new_game():
         users = User.query.all()
         return render_template("game/new.html", users=users)
 
-
 @app.route("/games/<int:game_id>")
 def play_game(game_id):
+    users = User.query.all()
     game = Game.query.get(game_id)
     if game:
-        return render_template("game/play.html", game=game)
+        return render_template("game/play.html", game=game, users=users)
     else:
         return 'no game'
     
+@app.route("/games/<int:game_id>/addPlayer", methods=["POST"])
+def add_player_in_game(game_id):
+    selected_player_id = request.form.get('selected_player_id')
+    user_to_add = User.query.get(selected_player_id)
+    game = Game.query.get(game_id)
+    if game:
+        if user_to_add:
+            cpt_white_player = 0
+            cpt_black_player = 0
+            for assoc in game.users:
+                if assoc.team == 0:
+                    cpt_white_player = cpt_white_player + 1
+                else :
+                    cpt_black_player = cpt_black_player + 1
+            
+            if cpt_white_player < cpt_black_player :
+                game_user_assoc = GamesUsers(team=0)
+            elif cpt_white_player > cpt_black_player :
+                game_user_assoc = GamesUsers(team=1)
+            elif cpt_white_player == cpt_black_player:
+                game_user_assoc = GamesUsers(team=random.randint(0, 1))
+
+            game_user_assoc.game = game
+            game_user_assoc.user = user_to_add
+            game.users.append(game_user_assoc)
+            user_to_add.games.append(game_user_assoc)
+            user_to_add.matches = user_to_add.matches + 1
+            db_session.commit()
+            return render_template("game/_playerPanel.html", game=game)
+        else:
+            return 'erreur : joueur introuvable'
+    else:
+        return 'erreur : no game'
+    
+@app.route("/games/<int:game_id>/freePlayers")
+def get_free_player_list(game_id):
+    game = Game.query.get(game_id)
+    users = User.query.all()
+    if game :
+        if users :
+            return render_template("game/_newPlayerList.html", game=game, users=users)
+        else :
+            return "error : no users"
+    else : 
+        return "error : no game"
+        
+
 @app.route("/games/<int:game_id>/goal", methods=["POST"])
 def goal(game_id):
     if request.method == "POST" :
